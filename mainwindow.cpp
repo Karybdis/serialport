@@ -73,7 +73,7 @@ void MainWindow::connectport()
        ui->comboBox_checkbit->setEnabled(false);
        ui->Button_portopen->setText("断开连接");
     }
-    else
+    else (serial->isOpen())
     {
 
         ui->comboBox_portnum->setEnabled(true);
