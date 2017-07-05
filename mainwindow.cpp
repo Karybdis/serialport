@@ -7,8 +7,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
      serial=new QSerialPort;
-    connect(ui->Button_portscan,SIGNAL(clicked(bool)),this,SLOT(portscan()));
-    connect(ui->Button_portopen,SIGNAL(clicked(bool)),this,SLOT(connectport()));
+    connect(ui->Button_portscan,SIGNAL(clicked(bool)),this,SLOT(portscan()));  //扫描串口
+    connect(ui->Button_portopen,SIGNAL(clicked(bool)),this,SLOT(connectport()));  //连接串口
+    connect(ui->Button_send,SIGNAL(clicked(bool)),this,SLOT(send()));  //发送数据
+    connect(serial,SIGNAL(readyRead()),this,SLOT(receive()));  //接收数据
 }
 
 MainWindow::~MainWindow()
@@ -73,7 +75,7 @@ void MainWindow::connectport()
        ui->comboBox_checkbit->setEnabled(false);
        ui->Button_portopen->setText("断开连接");
     }
-    else (serial->isOpen())
+    else
     {
 
         ui->comboBox_portnum->setEnabled(true);
@@ -86,4 +88,15 @@ void MainWindow::connectport()
     }
 }
 
+void MainWindow::send()
+{
+    QString message=ui->textEdit->toPlainText();
+    serial->write(message.toLatin1().toHex(),message.length());
+}
+
+void MainWindow::receive()
+{
+    QByteArray message=serial->readAll();
+    ui->textBrowser->insertPlainText(message.toHex());
+}
 

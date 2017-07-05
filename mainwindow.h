@@ -24,7 +24,8 @@ private:
 private slots:
     void portscan();
     void connectport();
-
+    void send();
+    void receive();
 };
 
 #endif // MAINWINDOW_H
