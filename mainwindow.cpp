@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->Button_portopen,SIGNAL(clicked(bool)),this,SLOT(connectport()));  //连接串口
     connect(ui->Button_send,SIGNAL(clicked(bool)),this,SLOT(send()));  //发送数据
     connect(serial,SIGNAL(readyRead()),this,SLOT(receive()));  //接收数据
-    connect(ui->Button_clean,SIGNAL(clicked(bool)),this,SLOT(clean()));
+    connect(ui->Button_clean,SIGNAL(clicked(bool)),this,SLOT(clean()));  //清空接收区
 }
 
 MainWindow::~MainWindow()
@@ -107,7 +107,7 @@ void MainWindow::receive()  //接受数据
     ui->textBrowser->insertPlainText(message.toHex());
 }
 
-void MainWindow::clean()
+void MainWindow::clean()  //清空接收区
 {
     ui->textBrowser->clear();
 }
