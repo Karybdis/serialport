@@ -12,6 +12,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->Button_portopen,SIGNAL(clicked(bool)),this,SLOT(connectport()));  //连接串口
     connect(ui->Button_send,SIGNAL(clicked(bool)),this,SLOT(send()));  //发送数据
     connect(serial,SIGNAL(readyRead()),this,SLOT(receive()));  //接收数据
+    connect(ui->Button_clean,SIGNAL(clicked(bool)),this,SLOT(clean()));
 }
 
 MainWindow::~MainWindow()
@@ -19,7 +20,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::portscan()
+void MainWindow::portscan()  //扫描串口
 {
     ui->comboBox_portnum->clear();
     QList<QSerialPortInfo> coms=QSerialPortInfo::availablePorts();
@@ -27,7 +28,7 @@ void MainWindow::portscan()
         ui->comboBox_portnum->addItem(coms.at(i).portName());
 }
 
-void MainWindow::connectport()
+void MainWindow::connectport()  //连接串口
 {
     int baudrate=ui->comboBox_baudrate->currentIndex();
     int databit=ui->comboBox_databit->currentIndex();
@@ -70,13 +71,9 @@ void MainWindow::connectport()
             default:break;
         }
         if(!serial->open(QIODevice::ReadWrite))
-        {
-
             QMessageBox::information(this,"Error",serial->errorString());
-        }
-
-        else{
-
+        else
+        {
             ui->comboBox_portnum->setEnabled(false);
             ui->comboBox_baudrate->setEnabled(false);
             ui->comboBox_databit->setEnabled(false);
@@ -98,15 +95,20 @@ void MainWindow::connectport()
     }
 }
 
-void MainWindow::send()
+void MainWindow::send()  //发送数据
 {
     QString message=ui->textEdit->toPlainText();
     serial->write(message.toLatin1().toHex(),message.length());
 }
 
-void MainWindow::receive()
+void MainWindow::receive()  //接受数据
 {
     QByteArray message=serial->readAll();
     ui->textBrowser->insertPlainText(message.toHex());
+}
+
+void MainWindow::clean()
+{
+    ui->textBrowser->clear();
 }
 

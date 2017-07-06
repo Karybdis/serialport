@@ -27,6 +27,7 @@ private slots:
     void connectport();
     void send();
     void receive();
+    void clean();
 };
 
 #endif // MAINWINDOW_H
