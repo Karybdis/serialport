@@ -103,7 +103,10 @@ void MainWindow::send()  //发送数据
 void MainWindow::receive()  //接受数据
 {
     QByteArray message=serial->readAll();
-    ui->textBrowser->insertPlainText(message.toHex().toUpper()+" ");
+    if (ui->checkBox_16->isChecked())
+        ui->textBrowser->insertPlainText(message.toHex().toUpper()+" ");
+    else
+        ui->textBrowser->insertPlainText(QString(message)+" ");
 }
 
 void MainWindow::clean()  //清空接收区
