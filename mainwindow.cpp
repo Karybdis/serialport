@@ -91,20 +91,19 @@ void MainWindow::connectport()  //连接串口
         ui->comboBox_stopbit->setEnabled(true);
         ui->comboBox_checkbit->setEnabled(true);
         ui->Button_portopen->setText("打开串口");
-
     }
 }
 
 void MainWindow::send()  //发送数据
 {
     QString message=ui->textEdit->toPlainText();
-    serial->write(message.toLatin1().toHex(),message.length());
+    serial->write(message.toLatin1());
 }
 
 void MainWindow::receive()  //接受数据
 {
     QByteArray message=serial->readAll();
-    ui->textBrowser->insertPlainText(message.toHex());
+    ui->textBrowser->insertPlainText(message.toHex().toUpper()+" ");
 }
 
 void MainWindow::clean()  //清空接收区
