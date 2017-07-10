@@ -269,18 +269,31 @@
      </item>
     </layout>
    </widget>
-   <widget class="QCheckBox" name="checkBox_16">
+   <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>170</x>
-      <y>430</y>
-      <width>93</width>
-      <height>21</height>
+      <x>120</x>
+      <y>310</y>
+      <width>131</width>
+      <height>80</height>
      </rect>
     </property>
-    <property name="text">
-     <string>十六进制</string>
-    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <widget class="QCheckBox" name="checkBox_send16">
+       <property name="text">
+        <string>十六进制发送</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkBox_receive16">
+       <property name="text">
+        <string>十六进制接收</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

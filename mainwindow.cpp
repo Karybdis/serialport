@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     serial=new QSerialPort;
     this->setWindowTitle("serialport");
+    portscan();
     connect(ui->Button_portscan,SIGNAL(clicked(bool)),this,SLOT(portscan()));  //扫描串口
     connect(ui->Button_portopen,SIGNAL(clicked(bool)),this,SLOT(connectport()));  //连接串口
     connect(ui->Button_send,SIGNAL(clicked(bool)),this,SLOT(send()));  //发送数据
@@ -97,13 +98,16 @@ void MainWindow::connectport()  //连接串口
 void MainWindow::send()  //发送数据
 {
     QString message=ui->textEdit->toPlainText();
-    serial->write(message.toLatin1());
+    if (ui->checkBox_send16->isChecked())
+        serial->write(message.toUtf8().toHex());
+    else
+        serial->write(message.toUtf8());
 }
 
 void MainWindow::receive()  //接受数据
 {
     QByteArray message=serial->readAll();
-    if (ui->checkBox_16->isChecked())
+    if (ui->checkBox_receive16->isChecked())
         ui->textBrowser->insertPlainText(message.toHex().toUpper()+" ");
     else
         ui->textBrowser->insertPlainText(QString(message)+" ");
