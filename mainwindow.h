@@ -21,6 +21,8 @@ public:
 private:
     Ui::MainWindow *ui;
     QSerialPort *serial;
+    void String2Hex(QString str, QByteArray &senddata);
+    char ConvertHexChar(char);
 
 private slots:
     void portscan();

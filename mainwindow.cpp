@@ -98,8 +98,10 @@ void MainWindow::connectport()  //连接串口
 void MainWindow::send()  //发送数据
 {
     QString message=ui->textEdit->toPlainText();
+    QByteArray mes;
+    String2Hex(message,mes);
     if (ui->checkBox_send16->isChecked())
-        serial->write(message.toUtf8().toHex());
+        serial->write(mes);
     else
         serial->write(message.toUtf8());
 }
@@ -116,5 +118,50 @@ void MainWindow::receive()  //接受数据
 void MainWindow::clean()  //清空接收区
 {
     ui->textBrowser->clear();
+}
+
+/***************************************************************************************/
+void MainWindow::String2Hex(QString str, QByteArray &senddata)
+{
+    int hexdata,lowhexdata;
+        int hexdatalen = 0;
+        int len = str.length();
+        senddata.resize(len/2);
+        char lstr,hstr;
+        for(int i=0; i<len; )
+        {
+            //char lstr,
+            hstr=str[i].toLatin1();
+            if(hstr == ' ')
+            {
+                i++;
+                continue;
+            }
+            i++;
+            if(i >= len)
+                break;
+            lstr = str[i].toLatin1();
+            hexdata = ConvertHexChar(hstr);
+            lowhexdata = ConvertHexChar(lstr);
+            if((hexdata == 16) || (lowhexdata == 16))
+                break;
+            else
+                hexdata = hexdata*16+lowhexdata;
+            i++;
+            senddata[hexdatalen] = (char)hexdata;
+            hexdatalen++;
+        }
+        senddata.resize(hexdatalen);
+}
+
+char MainWindow::ConvertHexChar(char ch)
+{
+    if((ch >= '0') && (ch <= '9'))
+            return ch-0x30;
+        else if((ch >= 'A') && (ch <= 'F'))
+            return ch-'A'+10;
+        else if((ch >= 'a') && (ch <= 'f'))
+            return ch-'a'+10;
+        else return (-1);
 }
 
